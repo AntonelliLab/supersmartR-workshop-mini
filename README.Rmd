@@ -1,3 +1,19 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- devtools::rmarkdown::render("README.Rmd") -->
+<!-- Rscript -e "library(knitr); knit('README.Rmd')" -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
 # Mini `supersmartR` Workshop <img src="https://raw.githubusercontent.com/AntonelliLab/supersmartR/master/logo.png" height="300" align="right"/>
 
 > Originally put together for a mini-workshop on 8 Nov. 2019 in  Gothenburg,
@@ -80,6 +96,38 @@ hello_world()
 
 ## Pipeline
 
+A complete pipeline for constructing a phylogenetic tree of all Caviomorpha
+species is contained in `pipeline/`. The pipeline uses the above packages and their functions. We can run each script of the pipeline using `source()`. (To
+save time we will skip the `restez` and `phylotaR` steps and download a
+completed folder of the first part of the results.)
+
+```{r pipeline}
+# minor outsider set-up
+outsider::verbosity_set(show_program = FALSE, show_docker = FALSE)
+if ('session' %in% ls()) {
+  outsider::ssh_setup(session = session)
+}
+
+# download the completed 1_phylotaR/
+download.file()
+
+# run each script in the pipeline
+stage_scripts <- c('2_clusters.R', '3_align.R', '4_supermatrix.R',
+                   '5_phylogeny.R', '6_supertree.R', '7_view.R')
+start_time <- Sys.time()
+for (stage_script in stage_scripts) {
+  cat('...', crayon::green(stage_script), '\n', sep = '')
+  scriptenv <- new.env()
+  source(file.path('pipeline', stage_script), local = scriptenv,
+         echo = FALSE, print.eval = FALSE)
+}
+end_time <- Sys.time()
+duration <- difftime(end_time, start_time, units = 'mins')
+cat('Duration: ', crayon::red(round(x = duration, digits = 3)), ' minutes.\n')
+
+# clear-up
+outsider::ssh_teardown()
+```
 
 
 ***

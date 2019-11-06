@@ -7,3 +7,12 @@ ex_al.fasta
 private_host_info.RData
 extra_topics/ex_seqs.fasta
 restez_db/
+gc_setup.R
+
+# results
+pipeline/1_phylotaR/
+pipeline/2_clusters/
+pipeline/3_align/
+pipeline/4_supermatrix/
+pipeline/5_phylogeny/
+pipeline/6_supertree/

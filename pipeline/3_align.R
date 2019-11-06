@@ -6,11 +6,15 @@ library(outsider)
 
 # Vars ----
 repo <- 'dombennett/om..mafft'
-wd <- file.path(getwd(), 'pipelines', '3_supertree')
+wd <- file.path(getwd(), 'pipeline')
 input_dir <- file.path(wd, '2_clusters')
 output_dir <- file.path(wd, '3_align')
 if (!dir.exists(output_dir)) {
   dir.create(output_dir)
+}
+# if threads obj already exists, ignore
+if (!'threads' %in% ls()) {
+  threads <- 2
 }
 
 # Install ----
@@ -27,5 +31,6 @@ for (i in seq_along(input_files)) {
   input_file <- file.path(input_dir, input_files[[i]])
   output_file <- file.path(output_dir, paste0(gene_clusters[[i]],
                                               '_alignment.fasta'))
-  mafft(arglist = c('--auto', input_file, '>', output_file))
+  mafft(arglist = c('--auto', input_file, '>', output_file, '--thread',
+                    threads))
 }

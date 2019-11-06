@@ -3,7 +3,7 @@ library(restez)
 
 # Vars ----
 gb_section <- '16' # Rodents
-restez_path <- file.path(getwd(), 'pipelines', 'restez_db')
+restez_path <- file.path(getwd(), 'pipeline', '0_restez')
 
 # Set up ----
 if (!dir.exists(restez_path)) {

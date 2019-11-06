@@ -104,12 +104,16 @@ completed folder of the first part of the results.)
 ```{r pipeline}
 # minor outsider set-up
 outsider::verbosity_set(show_program = FALSE, show_docker = FALSE)
-if ('session' %in% ls()) {
-  outsider::ssh_setup(session = session)
+if (file.exists('gc_setup.R')) {
+  source(file = 'gc_setup.R', local = FALSE, echo = FALSE, print.eval = FALSE)
 }
 
-# download the completed 1_phylotaR/
-download.file()
+# save time by skipping the first two stages by using the ready
+#  1_phylotaR/ in data/
+zipfile <- file.path('data', '1_phylotaR.zip')
+if (file.exists(zipfile)) {
+  utils::unzip(zipfile = zipfile, exdir = 'pipeline', overwrite = TRUE)
+}
 
 # run each script in the pipeline
 stage_scripts <- c('2_clusters.R', '3_align.R', '4_supermatrix.R',
@@ -129,6 +133,7 @@ cat('Duration: ', crayon::red(round(x = duration, digits = 3)), ' minutes.\n')
 outsider::ssh_teardown()
 ```
 
+![supertree](supertree.png)
 
 ***
 

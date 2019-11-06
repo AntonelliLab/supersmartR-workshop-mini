@@ -2,10 +2,10 @@
 
 # Library ----
 supertree_generate <- NULL
-source(file.path('pipelines', 'tools.R'))
+source(file.path('pipeline', 'tools.R'))
 
 # Vars ----
-wd <- file.path(getwd(), 'pipelines', '3_supertree')
+wd <- file.path(getwd(), 'pipeline')
 input_dir <- file.path(wd, '5_phylogeny')
 output_file <- file.path(wd, '6_supertree', 'supertree_2.tre')
 

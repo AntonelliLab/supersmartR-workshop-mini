@@ -6,11 +6,14 @@ library(outsider)
 
 # Vars ----
 repo <- 'dombennett/om..raxml'
-wd <- file.path(getwd(), 'pipelines', '3_supertree')
+wd <- file.path(getwd(), 'pipeline')
 input_dir <- file.path(wd, '4_supermatrix')
 output_dir <- file.path(wd, '5_phylogeny')
 if (!dir.exists(output_dir)) {
   dir.create(output_dir)
+}
+if (!'threads' %in% ls()) {
+  threads <- 2
 }
 
 # Install ----
@@ -28,6 +31,6 @@ for (id in ids) {
   # fast analysis
   seed_n <- round(runif(n = 1, min = 1, max = 99999))
   raxml(arglist = c('-m', 'GTRGAMMA', '-s', supermatrix_file, '-p', seed_n,
-                    '-n', id, '-T', '2', '-q', partition_file),
+                    '-n', id, '-T', threads, '-q', partition_file),
         outdir = output_dir)
 }

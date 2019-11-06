@@ -3,12 +3,12 @@
 
 # Library ----
 duplicates_drop <- taxtree_generate <- scientific_names_get <- NULL
-source(file.path('pipelines', 'tools.R'))
+source(file.path('pipeline', 'tools.R'))
 library(phylotaR)
 
 # Vars ----
 min_nspp <- 20
-wd <- file.path(getwd(), 'pipelines', '3_supertree')
+wd <- file.path(getwd(), 'pipeline')
 input_dir <- file.path(wd, '1_phylotaR')
 output_dir <- file.path(wd, '2_clusters')
 if (!dir.exists(output_dir)) {
@@ -42,6 +42,18 @@ smmry <- summary(reduced)
 for (i in seq_len(nrow(smmry))) {
   cid <- smmry[i, 'ID']
   scientific_names <- scientific_names_get(cid = cid, phylota = reduced)
+  # drop any sci names that do not have Genus species 
+  scientific_names <- scientific_names[vapply(X = strsplit(x = scientific_names,
+                                                           split = '_'),
+                                              FUN = length,
+                                              FUN.VALUE = integer(1)) == 2]
+  # ... or have numbers in their names
+  scientific_names <- scientific_names[!grepl(pattern = "[0-9]",
+                                              x = scientific_names)]
+  # ... or have "sp" as a species name
+  scientific_names <- scientific_names[!grepl(pattern = "_sp$",
+                                              x = scientific_names)]
+  # get a suitable cluster name
   gene_nm <- sub(pattern = '\\s.*$', replacement = '', smmry[i, 'Feature'])
   if (nchar(gene_nm) <= 3) {
     gene_nm <- paste0(i, '_cluster')

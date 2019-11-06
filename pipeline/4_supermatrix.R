@@ -5,7 +5,7 @@
 library(gaius)
 
 # Vars ----
-wd <- file.path(getwd(), 'pipelines', '3_supertree')
+wd <- file.path(getwd(), 'pipeline')
 input_dir <- file.path(wd, '3_align')
 output_dir <- file.path(wd, '4_supermatrix')
 if (!dir.exists(output_dir)) {

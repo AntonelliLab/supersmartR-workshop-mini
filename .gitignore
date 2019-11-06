@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+ex_al.fasta
+private_host_info.RData
+extra_topics/ex_seqs.fasta
+restez_db/

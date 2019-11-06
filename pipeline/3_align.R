@@ -3,6 +3,7 @@
 
 # Library ----
 library(outsider)
+verbosity_set(show_program = FALSE, show_docker = FALSE)
 
 # Vars ----
 repo <- 'dombennett/om..mafft'
@@ -31,6 +32,6 @@ for (i in seq_along(input_files)) {
   input_file <- file.path(input_dir, input_files[[i]])
   output_file <- file.path(output_dir, paste0(gene_clusters[[i]],
                                               '_alignment.fasta'))
-  mafft(arglist = c('--auto', input_file, '>', output_file, '--thread',
-                    threads))
+  mafft(arglist = c('--auto', '--thread', threads, input_file, '>',
+                    output_file))
 }

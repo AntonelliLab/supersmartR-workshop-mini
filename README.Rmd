@@ -70,12 +70,16 @@ install_github("antonellilab/gaius")
 If you're computer is set-up correctly with the R packages and Docker, you
 should be able to run the below script without errors.
 
-```r
+```{r testoutsider, results='hold'}
+## Code
 library(outsider)
 repo <- "dombennett/om..hello.world"
 module_install(repo = repo, force = TRUE)
 hello_world <- module_import(fname = "hello_world", repo = repo)
 hello_world()
+
+## Output
+
 ```
 
 * * *
@@ -101,9 +105,10 @@ species is contained in `pipeline/`. The pipeline uses the above packages and th
 save time we will skip the `restez` and `phylotaR` steps and download a
 completed folder of the first part of the results.)
 
-```{r pipeline}
+```{r pipeline, results='hold'}
+## Code
+
 # minor outsider set-up
-outsider::verbosity_set(show_program = FALSE, show_docker = FALSE)
 if (file.exists('gc_setup.R')) {
   source(file = 'gc_setup.R', local = FALSE, echo = FALSE, print.eval = FALSE)
 }
@@ -118,9 +123,12 @@ if (file.exists(zipfile)) {
 # run each script in the pipeline
 stage_scripts <- c('2_clusters.R', '3_align.R', '4_supermatrix.R',
                    '5_phylogeny.R', '6_supertree.R', '7_view.R')
+stage_scripts <- c('2_clusters.R',  '4_supermatrix.R',
+                    '6_supertree.R', '7_view.R')
 start_time <- Sys.time()
+cat('Running pipeline ....\n', sep = '')
 for (stage_script in stage_scripts) {
-  cat('...', crayon::green(stage_script), '\n', sep = '')
+  cat('... ', crayon::green(stage_script), '\n', sep = '')
   scriptenv <- new.env()
   source(file.path('pipeline', stage_script), local = scriptenv,
          echo = FALSE, print.eval = FALSE)
@@ -131,6 +139,8 @@ cat('Duration: ', crayon::red(round(x = duration, digits = 3)), ' minutes.\n')
 
 # clear-up
 outsider::ssh_teardown()
+
+## Output
 ```
 
 ![supertree](supertree.png)

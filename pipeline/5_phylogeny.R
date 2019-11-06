@@ -3,6 +3,7 @@
 
 # Library ----
 library(outsider)
+verbosity_set(show_program = FALSE, show_docker = FALSE)
 
 # Vars ----
 repo <- 'dombennett/om..raxml'

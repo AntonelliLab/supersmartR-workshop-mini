@@ -49,7 +49,7 @@ of all Guinea-pig-like species).
 * [Supertree pipeline](#pipeline)
 
 
-*Duration ~1 hr*
+**Target Duration ~1 hr**
 
 * * *
 
@@ -505,6 +505,8 @@ completed folder of the first part of the results.)
 # minor outsider set-up
 if (file.exists('gc_setup.R')) {
   source(file = 'gc_setup.R', local = FALSE, echo = FALSE, print.eval = FALSE)
+} else {
+  threads <- 4
 }
 
 # save time by skipping the first two stages by using the ready
@@ -515,17 +517,16 @@ if (file.exists(zipfile)) {
 }
 
 # run each script in the pipeline
-# stage_scripts <- c('2_clusters.R', '3_align.R', '4_supermatrix.R',
-#                    '5_phylogeny.R', '6_supertree.R', '7_view.R')
-stage_scripts <- c('2_clusters.R',  '4_supermatrix.R',
-                    '6_supertree.R', '7_view.R')
+stage_scripts <- c('2_clusters.R', '3_align.R', '4_supermatrix.R',
+                   '5_phylogeny.R', '6_supertree.R', '7_view.R')
 start_time <- Sys.time()
 cat('Running pipeline ....\n', sep = '')
 for (stage_script in stage_scripts) {
   cat('... ', crayon::green(stage_script), '\n', sep = '')
   scriptenv <- new.env()
-  source(file.path('pipeline', stage_script), local = scriptenv,
-         echo = FALSE, print.eval = FALSE)
+  scriptenv$threads <- threads
+  suppressMessages(source(file.path('pipeline', stage_script),
+                          local = scriptenv, echo = FALSE, print.eval = FALSE))
 }
 end_time <- Sys.time()
 duration <- difftime(end_time, start_time, units = 'mins')
@@ -536,6 +537,8 @@ outsider::ssh_teardown()
 
 ## Output
 ```
+
+The resulting tree consists of 185 tips, generating from 16 gene/clusters.
 
 ![supertree](supertree.png)
 

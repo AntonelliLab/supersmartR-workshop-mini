@@ -28,7 +28,7 @@ mafft <- module_import(fname = 'mafft', repo = repo)
 input_files <- list.files(path = input_dir, pattern = '.fasta')
 gene_clusters <- sub(pattern = '\\.fasta', replacement = '', x = input_files)
 for (i in seq_along(input_files)) {
-  cat('... aligning ', crayon::green(gene_clusters[[i]]), '\n')
+  cat('... ... aligning ', crayon::green(gene_clusters[[i]]), '\n')
   input_file <- file.path(input_dir, input_files[[i]])
   output_file <- file.path(output_dir, paste0(gene_clusters[[i]],
                                               '_alignment.fasta'))

@@ -27,6 +27,7 @@ raxml <- module_import(fname = 'raxml', repo = repo)
 ids <- list.files(path = input_dir, pattern = '_supermatrix.fasta')
 ids <- sub(pattern = '_.*$', replacement = '', x = ids)
 for (id in ids) {
+  cat('... ... generating tree for ', crayon::green(id), '\n')
   supermatrix_file <- file.path(input_dir, paste0(id, '_supermatrix.fasta'))
   partition_file <- file.path(input_dir, paste0(id, '_partition.txt'))
   # fast analysis

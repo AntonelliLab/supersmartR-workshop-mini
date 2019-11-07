@@ -31,7 +31,7 @@ This workshop we will [introduce the packages](#packages) and provide code to ru
 -   [Introduction to `gaius`](#gaius)
 -   [Supertree pipeline](#pipeline)
 
-*Duration ~1 hr*
+**Target Duration ~1 hr**
 
 ------------------------------------------------------------------------
 
@@ -438,8 +438,8 @@ db_create()
 restez_disconnect()
 
 # OUTPUT
-#> ... Creating '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez'
-#> ... Creating '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez/downloads'
+#> ... Creating '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmpbpcz4s/unannotated_database/restez'
+#> ... Creating '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmpbpcz4s/unannotated_database/restez/downloads'
 #> ────────────────────────────────────────────────────────────────────────────────────
 #> Looking up latest GenBank release ...
 #> ... release number 234
@@ -511,7 +511,7 @@ restez_disconnect()
 #> ... 'gbuna1.seq' (1/1)
 #> Done. Enjoy your day.
 #> Adding 1 file(s) to the database ...
-#> ... [32m'gbuna1.seq.gz'[39m ([34m1/1[39m)
+#> ... [32m'gbuna1.seq.gz'[39m ([34m1/1[39m)
 #> Done.
 ```
 
@@ -547,20 +547,20 @@ restez_disconnect()
 #> Checking setup status at  ...
 #> ────────────────────────────────────────────────────────────────────────────────────
 #> Restez path ...
-#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez'
+#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmpbpcz4s/unannotated_database/restez'
 #> ... Does path exist? 'Yes'
 #> ────────────────────────────────────────────────────────────────────────────────────
 #> Download ...
-#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez/downloads'
+#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmpbpcz4s/unannotated_database/restez/downloads'
 #> ... Does path exist? 'Yes'
 #> ... N. files 2
 #> ... N. GBs 0
 #> ... GenBank division selections 'Unannotated'
 #> ... GenBank Release 234
-#> ... Last updated '2019-11-07 16:47:54'
+#> ... Last updated '2019-11-07 20:08:38'
 #> ────────────────────────────────────────────────────────────────────────────────────
 #> Database ...
-#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez/sql_db'
+#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmpbpcz4s/unannotated_database/restez/sql_db'
 #> ... Does path exist? 'Yes'
 #> ... N. GBs 0
 #> ... Is database connected? 'Yes'
@@ -568,46 +568,37 @@ restez_disconnect()
 #> ... Number of sequences 543
 #> ... Min. sequence length 0
 #> ... Max. sequence length Inf
-#> ... Last_updated '2019-11-07 16:47:57'
-#> LOCUS       AF298111                 705 bp    DNA     linear   UNA 23-NOV-2000
-#> DEFINITION  Unidentified clone B8 DNA sequence from ocean beach sand.
-#> ACCESSION   AF298111
-#> VERSION     AF298111.1
+#> ... Last_updated '2019-11-07 20:08:45'
+#> LOCUS       SCAF000130               299 bp    RNA     linear   UNA 15-MAY-1997
+#> DEFINITION  Synthetic RNA ligase ribozyme CM2g, complete sequence.
+#> ACCESSION   AF000130
+#> VERSION     AF000130.1
 #> KEYWORDS    .
 #> SOURCE      unidentified
 #>   ORGANISM  unidentified
 #>             unclassified sequences.
-#> REFERENCE   1  (bases 1 to 705)
-#>   AUTHORS   Naviaux,R.K.
-#>   TITLE     Sand DNA: a multigenomic library on the beach
+#> REFERENCE   1  (bases 1 to 299)
+#>   AUTHORS   Hager,A.J. and Szostak,J.W.
+#>   TITLE     Isolation of novel ribozymes that ligate AMP-activated RNA
+#>             substrates
 #>   JOURNAL   Unpublished
-#> REFERENCE   2  (bases 1 to 705)
-#>   AUTHORS   Naviaux,R.K.
+#> REFERENCE   2  (bases 1 to 299)
+#>   AUTHORS   Hager,A.J. and Szostak,J.W.
 #>   TITLE     Direct Submission
-#>   JOURNAL   Submitted (21-AUG-2000) Medicine, University of California, San
-#>             Diego School of Medicine, 200 West Arbor Drive, San Diego, CA
-#>             92103-8467, USA
+#>   JOURNAL   Submitted (17-APR-1997) Molecular Biology, MGH, Boston, MA 02114,
+#>             USA
 #> FEATURES             Location/Qualifiers
-#>      source          1..705
+#>      source          1..299
 #>                      /organism="unidentified"
-#>                      /mol_type="genomic DNA"
+#>                      /mol_type="genomic RNA"
 #>                      /db_xref="taxon:32644"
-#>                      /clone="B8"
-#>                      /note="anonymous environmental sample sequence from ocean
-#>                      beach sand"
+#>                      /note="ligase ribozyme CM2g"
 #> ORIGIN      
-#>         1 gatcctgccg gaagctcgac gaggtcgata ttgtagttgc cagcactcgt gcgattcttg
-#>        61 ccaccacgtc cttcgagata gaaggttcgg tcctcgttgc tggcaagtat cgtgaccata
-#>       121 gcgtccttgc tccggttctc acgggtaaag aaatctgcga gtgcatcccc gagctcgggc
-#>       181 ggctccatgc cgtcaaagtc gtagccggga acggccacct gaaaatcact agaaatcagc
-#>       241 ctctctttgc tgactccgtc cacaagggtc agataggcgt cgaagtcggc cgtgtgccct
-#>       301 cgcatgacgg cagctacccg cgtgtttgcg ggaacgtcga acttgacgat caccgtcgcc
-#>       361 gccagcacct cagccttgct tggagtcggg gagccggaca agcctaggct acggatcgaa
-#>       421 ccactgatgc tctgccccac ctgcattccc acgatggccg agctgtcgag caagtcatcc
-#>       481 gagtcgagga gatcatcgtc cggagctgtg ccgcagccca tcgccagagc agaaaattgg
-#>       541 cactatggaa gtacagcgca tgccttcttt atgagcacnc gnatgccacg ggctacnctn
-#>       601 tgttttcgca gcttacacnc ttcatttgcg ctgaagcggg caggttggca ncctttgggt
-#>       661 aacataccca ctagttcgag gccgcttttt agttgcgagc tcgac
+#>         1 ggcaacgcgc gactaggata ggcacctcag agagtggcca aacagttcgg gggaagatgc
+#>        61 cgtgtagtat ggccagggga agtatagctg ccgcgacacg atgtcccgag ccagcaaccc
+#>       121 agtgatctta ttgaggtgat caccagtgtc tacattcgat gtatgacgcg ttgggaagaa
+#>       181 actctggcac cgttgccgac tagggtggcc attaatacct caggcccacc gaagcatggg
+#>       241 gacaccagtg tcgccgatcg accatacttc ccgagaccgt atagcctgtc cttagatac
 #> //
 ```
 
@@ -857,7 +848,10 @@ A complete pipeline for constructing a phylogenetic tree of all Caviomorpha spec
 # minor outsider set-up
 if (file.exists('gc_setup.R')) {
   source(file = 'gc_setup.R', local = FALSE, echo = FALSE, print.eval = FALSE)
+} else {
+  threads <- 4
 }
+#> Remember to run ssh_teardown() when finished.
 
 # save time by skipping the first two stages by using the ready
 #  1_phylotaR/ in data/
@@ -867,17 +861,16 @@ if (file.exists(zipfile)) {
 }
 
 # run each script in the pipeline
-# stage_scripts <- c('2_clusters.R', '3_align.R', '4_supermatrix.R',
-#                    '5_phylogeny.R', '6_supertree.R', '7_view.R')
-stage_scripts <- c('2_clusters.R',  '4_supermatrix.R',
-                    '6_supertree.R', '7_view.R')
+stage_scripts <- c('2_clusters.R', '3_align.R', '4_supermatrix.R',
+                   '5_phylogeny.R', '6_supertree.R', '7_view.R')
 start_time <- Sys.time()
 cat('Running pipeline ....\n', sep = '')
 for (stage_script in stage_scripts) {
   cat('... ', crayon::green(stage_script), '\n', sep = '')
   scriptenv <- new.env()
-  source(file.path('pipeline', stage_script), local = scriptenv,
-         echo = FALSE, print.eval = FALSE)
+  scriptenv$threads <- threads
+  suppressMessages(source(file.path('pipeline', stage_script),
+                          local = scriptenv, echo = FALSE, print.eval = FALSE))
 }
 end_time <- Sys.time()
 duration <- difftime(end_time, start_time, units = 'mins')
@@ -889,11 +882,38 @@ outsider::ssh_teardown()
 ## Output
 #> Running pipeline ....
 #> ... 2_clusters.R
+#> ... 3_align.R
+#> ... ... aligning  10_cluster 
+#> ... ... aligning  11_cluster 
+#> ... ... aligning  14_cluster 
+#> ... ... aligning  15_cluster 
+#> ... ... aligning  16_cluster 
+#> ... ... aligning  17_cluster 
+#> ... ... aligning  18_cluster 
+#> ... ... aligning  3_cluster 
+#> ... ... aligning  6_cluster 
+#> ... ... aligning  8_cluster 
+#> ... ... aligning  9_cluster 
+#> ... ... aligning  barcode 
+#> ... ... aligning  cytochrome 
+#> ... ... aligning  factorvwf 
+#> ... ... aligning  gene 
+#> ... ... aligning  genegrowth 
 #> ... 4_supermatrix.R
+#> ... 5_phylogeny.R
+#> ... ... generating tree for  backbone 
+#> ... ... generating tree for  n211 
+#> ... ... generating tree for  n224 
+#> ... ... generating tree for  n276 
+#> ... ... generating tree for  n340 
+#> ... ... generating tree for  n375 
+#> ... ... generating tree for  n88 
 #> ... 6_supertree.R
 #> ... 7_view.R
-#> Duration:  0.198  minutes.
+#> Duration:  5.292  minutes.
 ```
+
+The resulting tree consists of 185 tips, generating from 16 gene/clusters.
 
 ![supertree](supertree.png)
 

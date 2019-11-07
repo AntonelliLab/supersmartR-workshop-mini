@@ -19,15 +19,30 @@ knitr::opts_chunk$set(
 > Originally put together for a mini-workshop on 8 Nov. 2019 in  Gothenburg,
 Sweden.
 
-[`supersmartR`](https://github.com/AntonelliLab/supersmartR) is a series of
+* [`supersmartR`](https://github.com/AntonelliLab/supersmartR) is a series of
 R packages that form a phylogenetic pipeline.
+* The original [SUPERSMART](https://github.com/naturalis/supersmart) program
+uses a "divide-and-conquer" apprach to constructing large phylogenetic trees.
+* It combines both a supermatrix (an assembly of multiple gene/clusters into a
+single matrix) and a supertree (merging multiple trees) approach.
+* `supersmartR` packages are standalone packages with their own functions
+and uses BUT they can be combined to recreate the supersmart pipeline.
 
-## <img src="https://raw.githubusercontent.com/AntonelliLab/supersmartR/master/supersmart%20vs%20supersmartr.png" height="450" align="middle"/>
+### [SUPERSMART](http://www.supersmart-project.org/)
 
-This workshop we will introduce the packages and provide code to run a simple
-pipeline to create a phylogenetic tree.
+![](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5410925/bin/syw066F1.jpg)
 
-Workshop duration ~1 hr.
+### [supersmartR](https://github.com/AntonelliLab/supersmartR)
+
+![](https://raw.githubusercontent.com/AntonelliLab/supersmartR/master/supersmart%20vs%20supersmartr.png)
+
+## The Workshop
+
+This workshop we will [introduce the packages](#packages) and provide code to
+run a simple [pipeline](#pipeline) to create a phylogenetic tree (a supertree
+of all Guinea-pig-like species).
+
+*Duration ~1 hr*
 
 * * *
 
@@ -68,7 +83,8 @@ install_github("antonellilab/gaius")
 ```
 
 If you're computer is set-up correctly with the R packages and Docker, you
-should be able to run the below script without errors.
+should be able to run the below script without errors (don't worry about
+security warnings).
 
 ```{r testoutsider, results='hold'}
 ## Code
@@ -84,19 +100,265 @@ hello_world()
 
 * * *
 
+# Setup
+
+To run all the code in this workshop you will need to:
+
+* Download the zipped folder of this GitHub repo, [click here](https://github.com/AntonelliLab/supersmartR-workshop-mini/archive/master.zip).
+* Unzip this folder and place it in a convenient location on your computer (e.g.
+"my coding projects").
+* Open RStudio and create a new project from this new folder.
+
+![](https://raw.githubusercontent.com/AntonelliLab/supersmartR-workshop-mini/master/assets/rstudio_setup.png)
+
+* * *
+
 # Tutorials
 
 ## Packages
 
-### `phylotaR`
+### [`phylotaR`](https://github.com/ropensci/phylotaR)
+
+The `phylotaR` package downloads all sequences associated with a given
+taxonomic group and then runs all-vs-all BLAST to identify clusters of
+sequences suitable for phylogenetic analysis.
+
+The process takes place across four stages:
+
+* Taxise: identify taxonomic IDs
+* Download: download sequences
+* Cluster: run all-vs-all BLAST
+* Cluser^2: run all-vs-all BLAST again
+
+![](https://raw.githubusercontent.com/ropensci/phylotaR/master/other/stages.png)
+
+#### Setup
+
+To run `phylotaR`, we need to set up a folder to host all downloaded files.
+Parameters for setting up the folder are provided to the `setup` function.
+
+```{r setup-phylotaR, include=TRUE, eval=FALSE}
+# NOT RUN
+library(phylotaR)
+# available parameters
+print(parameters())
+# e.g. mnsql = 200 - minimum sequence length
+# pass the parameters to the setup() function
+# essential parmeters are: wd, txid
+wd <- file.path(tempdir(), 'testing_phylotaR')
+if (dir.exists(wd)) {
+  unlink(x = wd, recursive = TRUE, force = TRUE)
+}
+dir.create(wd)
+setup(wd = wd, txid = '9504', outsider = TRUE, v = TRUE)
+# to run the pipeline
+# run(wd = wd)
+```
 
 
+#### Parsing results
 
-### `restez`
+Read in the phylotaR results with `read_phylota`. But here we will use the
+pacakge example data, "Aotus".
 
-### `outsider`
+##### Summarise the clusters
 
-### `gaius`
+```{r phylotar-summary-results, echo=TRUE, results='hold'}
+library(phylotaR)
+data(aotus)
+# generate summary stats for each cluster
+smmry_tbl <- summary(aotus)
+# Important details
+#  N_taxa     - number of taxonomic entities associated with sequences in cluster
+#  N_seqs     - number of sequences in cluster
+#  Med_sql    - median sequence length of sequences in cluster
+#  MAD        - measure of the deviation in sequence length of a cluster
+#  Definition - must common words in sequence definition lines
+smmry_tbl[1:10, ]
+```
+
+```{r phylotar-summary-plot}
+# plot
+p <- plot_phylota_treemap(phylota = aotus, cids = aotus@cids[1:10],
+                          area = 'nsq', fill = 'ntx')
+print(p)
+```
+
+##### Understand the PhyLoTa table (`aotus`)
+
+```{r phylota-table, results='hold'}
+# CODE
+
+# PhyLoTa table has ...
+# clusters
+aotus@clstrs
+# sequences
+aotus@sqs
+# taxonomy
+aotus@txdct
+# A cluster is a list of sequences
+aotus@clstrs@clstrs[[1]]
+str(aotus@clstrs@clstrs[[1]])
+# A sequence is a series of letters and associated metadata
+aotus@sqs@sqs[[1]]
+str(aotus@sqs@sqs[[1]])
+# A taxonomic record is an ID and associated metadata
+txid <- aotus@txids[[1]]
+# Information can be extracted from ...
+# clusters
+get_clstr_slot(phylota = aotus, cid = aotus@cids[1:10], slt_nm = 'nsqs')
+# sequences
+get_sq_slot(phylota = aotus, sid = aotus@sids[1:10], slt_nm = 'nncltds')
+# tax. records
+get_tx_slot(phylota = aotus, txid = aotus@txids[1:10], slt_nm = 'scnm')
+# Other useful convenience functions
+get_nsqs(phylota = aotus, cid = aotus@cids[1:10])
+get_ntaxa(phylota = aotus, cid = aotus@cids[1:10], rnk = 'species')
+
+# OUTPUT
+```
+
+##### Select clusters
+
+```{r phylotar-selection, results='hold'}
+# CODE
+
+# use the summary table to extract cids of interest
+nrow(smmry_tbl)
+# keep clusters with MAD above 0.5
+smmry_tbl <- smmry_tbl[smmry_tbl[['MAD']] >= 0.5, ]
+nrow(smmry_tbl)
+# keep clusters with more than 10 seqs
+smmry_tbl <- smmry_tbl[smmry_tbl[['N_seqs']] >= 10, ]
+nrow(smmry_tbl)
+# keep clusters with more than 4 species
+nspp <- get_ntaxa(phylota = aotus, cid = smmry_tbl[['ID']], rnk = 'species')
+selected_cids <- smmry_tbl[['ID']][nspp >= 4]
+length(selected_cids)
+# create selected PhyLoTa table
+selected_clusters <- drop_clstrs(phylota = aotus, cid = selected_cids)
+
+# OUTPUT
+```
+
+##### Plotting selected clusters
+
+```{r phylota-plotting, results='hold'}
+# CODE
+
+# extract scientific names for taxonomic IDs
+scnms <- get_tx_slot(phylota = selected_clusters, txid = selected_clusters@txids,
+                     slt_nm = 'scnm')
+# plot presence/absence
+plot_phylota_pa(phylota = selected_clusters, cids = selected_clusters@cids,
+                txids = selected_clusters@txids, txnms = scnms)
+
+```
+
+##### Writing to file
+
+```{r phylota-writeout, results='hold'}
+# CODE
+
+# reduce clusters to repr. of 1 seq. per sp.
+reduced_clusters <- drop_by_rank(phylota = selected_clusters, rnk = 'species',
+                                 n = 1)
+reduced_clusters
+# write out first cluster
+sids <- reduced_clusters@clstrs[['0']]@sids
+txids <- get_txids(phylota = reduced_clusters, sid = sids, rnk = 'species')
+scnms <- get_tx_slot(phylota = reduced_clusters, txid = txids, slt_nm = 'scnm')
+outfile <- file.path(tempdir(), 'cluster_1.fasta')
+write_sqs(phylota = reduced_clusters, sid = sids, sq_nm = scnms,
+          outfile = outfile)
+cat(readLines(outfile), sep = '\n')
+
+# OUTPUT
+```
+
+### [`restez`](https://github.com/ropensci/restez)
+
+`restez` is a package that allows users to download whole chunks of NCBI's
+[GenBank](https://www.ncbi.nlm.nih.gov/genbank/). The package works by:
+
+* Downloading compressed files of sections of GenBank
+* Unpacking these files and building a local GenBank copy
+* Providing generic functions for interacting with the local copy
+
+![](https://raw.githubusercontent.com/ropensci/restez/master/paper/outline.png)
+
+#### Set-up your first `restez` database
+
+Here, we will do the following:
+
+1. Specify a location for our database (`restez_path`)
+2. Download the smallest section of GenBank (unannotated)
+3. Build a local database
+
+```{r delete-database, include=FALSE}
+rstz_pth <- file.path(tempdir(), 'unannotated_database')
+if (dir.exists(rstz_pth)) {
+  unlink(x = rstz_pth, recursive = TRUE, force = TRUE)
+}
+```
+```{r restez-setup, echo=TRUE, results='hold'}
+# CODE
+
+library(restez)
+# 1. Set the filepath for where the database will be stored
+rstz_pth <- file.path(tempdir(), 'unannotated_database')
+if (!dir.exists(rstz_pth)) {
+  dir.create(rstz_pth)
+}
+restez_path_set(filepath = rstz_pth)
+# 2. Download
+# select number 20, for unannoated (the smallest section)
+db_download(preselection = '20')
+# 3. Create database
+# connect to empty database
+restez_connect()
+db_create()
+# always disconnect from a database when not in use.
+restez_disconnect()
+
+# OUTPUT
+```
+
+## Query the database
+
+We can send queries to the database using two different methods: `restez`
+functions or [`rentrez`](https://ropensci.org/tutorials/rentrez_tutorial/)
+wrappers.
+
+> **What is `rentrez`?** The `rentrez` package allows users to interact with
+NCBI Entrez. `restez` wraps around some of its functions so that instead of
+sending queries across the internet, the local database is checked first.
+
+```{r querying, echo=TRUE, results='hold'}
+# CODE
+
+# import library, point to database and connect
+library(restez)
+rstz_pth <- file.path(tempdir(), 'unannotated_database')
+restez_path_set(filepath = rstz_pth)
+restez_connect()
+# Check the status
+restez_status()
+# Get a random ID from the database
+id <- sample(x = list_db_ids(n = 100), size = 1)
+# print record information
+record <- gb_record_get(id)
+cat(record)
+# see ?gb_record_get for more query functions
+# always disconnect
+restez_disconnect()
+
+# OUTPUT
+```
+
+### [`outsider`](https://github.com/antonellilab/outsider)
+
+### [`gaius`](https://github.com/antonellilab/gaius)
 
 ## Pipeline
 
@@ -121,8 +383,8 @@ if (file.exists(zipfile)) {
 }
 
 # run each script in the pipeline
-stage_scripts <- c('2_clusters.R', '3_align.R', '4_supermatrix.R',
-                   '5_phylogeny.R', '6_supertree.R', '7_view.R')
+# stage_scripts <- c('2_clusters.R', '3_align.R', '4_supermatrix.R',
+#                    '5_phylogeny.R', '6_supertree.R', '7_view.R')
 stage_scripts <- c('2_clusters.R',  '4_supermatrix.R',
                     '6_supertree.R', '7_view.R')
 start_time <- Sys.time()

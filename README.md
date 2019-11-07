@@ -25,6 +25,12 @@ The Workshop
 
 This workshop we will [introduce the packages](#packages) and provide code to run a simple [pipeline](#pipeline) to create a phylogenetic tree (a supertree of all Guinea-pig-like species).
 
+-   [Introduction to `phylotaR`](#phylotar)
+-   [Introduction to `restez`](#restez)
+-   [Introduction to `outsider`](#outsider)
+-   [Introduction to `gaius`](#gaius)
+-   [Supertree pipeline](#pipeline)
+
 *Duration ~1 hr*
 
 ------------------------------------------------------------------------
@@ -40,7 +46,7 @@ Prerequisites
     -   R
     -   Phylogenetics
 
-(Windows users may struggle installing Docker Desktop, in which case Docker Toolbox will also work.)
+(Windows users may struggle installing Docker Desktop, in which case [Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) will also work.)
 
 ### R packages
 
@@ -109,7 +115,7 @@ Tutorials
 Packages
 --------
 
-### [`phylotaR`](https://github.com/ropensci/phylotaR)
+### [`phylotaR`](https://github.com/ropensci/phylotaR) <img src="https://raw.githubusercontent.com/ropensci/phylotaR/master/logo.png" height="200" align="right"/>
 
 The `phylotaR` package downloads all sequences associated with a given taxonomic group and then runs all-vs-all BLAST to identify clusters of sequences suitable for phylogenetic analysis.
 
@@ -388,7 +394,7 @@ cat(readLines(outfile), sep = '\n')
 #> gttgagagcttcaca
 ```
 
-### [`restez`](https://github.com/ropensci/restez)
+### [`restez`](https://github.com/ropensci/restez) <img src="https://raw.githubusercontent.com/ropensci/restez/master/logo.png" height="200" align="right"/>
 
 `restez` is a package that allows users to download whole chunks of NCBI's [GenBank](https://www.ncbi.nlm.nih.gov/genbank/). The package works by:
 
@@ -432,8 +438,8 @@ db_create()
 restez_disconnect()
 
 # OUTPUT
-#> ... Creating '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmp61lzsZ/unannotated_database/restez'
-#> ... Creating '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmp61lzsZ/unannotated_database/restez/downloads'
+#> ... Creating '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez'
+#> ... Creating '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez/downloads'
 #> ────────────────────────────────────────────────────────────────────────────────────
 #> Looking up latest GenBank release ...
 #> ... release number 234
@@ -509,8 +515,7 @@ restez_disconnect()
 #> Done.
 ```
 
-Query the database
-------------------
+#### Query the database
 
 We can send queries to the database using two different methods: `restez` functions or [`rentrez`](https://ropensci.org/tutorials/rentrez_tutorial/) wrappers.
 
@@ -542,20 +547,20 @@ restez_disconnect()
 #> Checking setup status at  ...
 #> ────────────────────────────────────────────────────────────────────────────────────
 #> Restez path ...
-#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmp61lzsZ/unannotated_database/restez'
+#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez'
 #> ... Does path exist? 'Yes'
 #> ────────────────────────────────────────────────────────────────────────────────────
 #> Download ...
-#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmp61lzsZ/unannotated_database/restez/downloads'
+#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez/downloads'
 #> ... Does path exist? 'Yes'
 #> ... N. files 2
 #> ... N. GBs 0
 #> ... GenBank division selections 'Unannotated'
 #> ... GenBank Release 234
-#> ... Last updated '2019-11-07 13:49:00'
+#> ... Last updated '2019-11-07 16:47:54'
 #> ────────────────────────────────────────────────────────────────────────────────────
 #> Database ...
-#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//Rtmp61lzsZ/unannotated_database/restez/sql_db'
+#> ... Path '/var/folders/ps/g89999v12490dmp0jnsfmykm0043m3/T//RtmpEjRjM4/unannotated_database/restez/sql_db'
 #> ... Does path exist? 'Yes'
 #> ... N. GBs 0
 #> ... Is database connected? 'Yes'
@@ -563,54 +568,286 @@ restez_disconnect()
 #> ... Number of sequences 543
 #> ... Min. sequence length 0
 #> ... Max. sequence length Inf
-#> ... Last_updated '2019-11-07 13:49:04'
-#> LOCUS       AF298103                 647 bp    DNA     linear   UNA 23-NOV-2000
-#> DEFINITION  Unidentified clone B27 DNA sequence from ocean beach sand.
-#> ACCESSION   AF298103
-#> VERSION     AF298103.1
+#> ... Last_updated '2019-11-07 16:47:57'
+#> LOCUS       AF298111                 705 bp    DNA     linear   UNA 23-NOV-2000
+#> DEFINITION  Unidentified clone B8 DNA sequence from ocean beach sand.
+#> ACCESSION   AF298111
+#> VERSION     AF298111.1
 #> KEYWORDS    .
 #> SOURCE      unidentified
 #>   ORGANISM  unidentified
 #>             unclassified sequences.
-#> REFERENCE   1  (bases 1 to 647)
+#> REFERENCE   1  (bases 1 to 705)
 #>   AUTHORS   Naviaux,R.K.
 #>   TITLE     Sand DNA: a multigenomic library on the beach
 #>   JOURNAL   Unpublished
-#> REFERENCE   2  (bases 1 to 647)
+#> REFERENCE   2  (bases 1 to 705)
 #>   AUTHORS   Naviaux,R.K.
 #>   TITLE     Direct Submission
 #>   JOURNAL   Submitted (21-AUG-2000) Medicine, University of California, San
 #>             Diego School of Medicine, 200 West Arbor Drive, San Diego, CA
 #>             92103-8467, USA
 #> FEATURES             Location/Qualifiers
-#>      source          1..647
+#>      source          1..705
 #>                      /organism="unidentified"
 #>                      /mol_type="genomic DNA"
 #>                      /db_xref="taxon:32644"
-#>                      /clone="B27"
+#>                      /clone="B8"
 #>                      /note="anonymous environmental sample sequence from ocean
 #>                      beach sand"
 #> ORIGIN      
-#>         1 gatcccgacc ttgatgctgt tcaagggcgg caacgtcgag gcgaccaagg tcggggcact
-#>        61 gtcgaagagc cagctcgcgg catttctcga cagcaatctc tgagcgcgac gcgcgccgcc
-#>       121 gtcatgtggc gctcatcacg aaaacttcgt cacacggggt agacgccccc tgaggcgcgt
-#>       181 gttaggtttt tcatacaccg gcgcactcgc gccgtcctca ccttcatccg tacccagcac
-#>       241 acgcttgctc acgcccatac ccgtgcggtc gtcatgaccg tcgaccgtgc tgcccgccag
-#>       301 tccgcctctt ggattgctta atgaacctca cagagttgaa acagaaaacc gccccggagc
-#>       361 tgctcgagct gtcgcaggag ctcggcatcg agggcatggc ccgctcgcgc aagcaggacg
-#>       421 tgatcttcgc gatcctgaag aaccaggcga agaagggcga ggacatctac ggcgacggcg
-#>       481 tgctcgaaat ccttcaggac ggattcggct tnctgcgctc gtctgacagc ttctacctgg
-#>       541 ccgggcccga cgacatttac gtnagtccna gccanatccg ccgcttnggc tgncaccggn
-#>       601 nnaccgtggt tggaaagata aggcttcaaa ggagggaagc gctcttt
+#>         1 gatcctgccg gaagctcgac gaggtcgata ttgtagttgc cagcactcgt gcgattcttg
+#>        61 ccaccacgtc cttcgagata gaaggttcgg tcctcgttgc tggcaagtat cgtgaccata
+#>       121 gcgtccttgc tccggttctc acgggtaaag aaatctgcga gtgcatcccc gagctcgggc
+#>       181 ggctccatgc cgtcaaagtc gtagccggga acggccacct gaaaatcact agaaatcagc
+#>       241 ctctctttgc tgactccgtc cacaagggtc agataggcgt cgaagtcggc cgtgtgccct
+#>       301 cgcatgacgg cagctacccg cgtgtttgcg ggaacgtcga acttgacgat caccgtcgcc
+#>       361 gccagcacct cagccttgct tggagtcggg gagccggaca agcctaggct acggatcgaa
+#>       421 ccactgatgc tctgccccac ctgcattccc acgatggccg agctgtcgag caagtcatcc
+#>       481 gagtcgagga gatcatcgtc cggagctgtg ccgcagccca tcgccagagc agaaaattgg
+#>       541 cactatggaa gtacagcgca tgccttcttt atgagcacnc gnatgccacg ggctacnctn
+#>       601 tgttttcgca gcttacacnc ttcatttgcg ctgaagcggg caggttggca ncctttgggt
+#>       661 aacataccca ctagttcgag gccgcttttt agttgcgagc tcgac
 #> //
 ```
 
-### [`outsider`](https://github.com/antonellilab/outsider)
+### [`outsider`](https://github.com/antonellilab/outsider) <img src="https://raw.githubusercontent.com/antonellilab/outsider/master/logo.png" height="200" align="right"/>
 
-### [`gaius`](https://github.com/antonellilab/gaius)
+`outsider` is a package that allows users to install and run external code within the R environment. This is very useful when trying to construct pipelines that make use of a variety of code. `outsider` requires Docker to work. It should be able to launch any (?!) command-line program.
+
+![](https://raw.githubusercontent.com/AntonelliLab/outsider/master/other/outline.png)
+
+You can find out what modules are available for a given coding-service using:
+
+``` r
+library(outsider)
+module_details(service = 'github')
+#> Warning in FUN(X[[i]], ...): Unable to fetch data from GitHub for
+#> 'hrbrmstr/om..nmap'
+#> # A tibble: 16 x 7
+#>    repo   program details versions updated_at          watchers_count url  
+#>    <chr>  <chr>   <chr>   <chr>    <dttm>                       <int> <chr>
+#>  1 DomBe… PyRate  Estima… latest,… 2019-10-25 13:06:00              1 http…
+#>  2 hrbrm… ""      ""      ""       2019-03-23 17:02:00              1 http…
+#>  3 DomBe… pyphla… TODO w… latest   2019-10-31 17:08:00              0 http…
+#>  4 DomBe… wikit   Fetch … latest   2019-10-25 15:27:00              0 http…
+#>  5 DomBe… RAxML   Random… latest   2019-10-25 14:21:00              0 http…
+#>  6 DomBe… beast   Bayesi… latest   2019-10-25 13:07:00              0 http…
+#>  7 DomBe… astral  Accura… latest   2019-10-25 13:07:00              0 http…
+#>  8 DomBe… revbay… Bayesi… latest   2019-10-25 13:06:00              0 http…
+#>  9 DomBe… BAMM    Bayesi… latest,… 2019-10-25 13:05:00              0 http…
+#> 10 DomBe… blast   Basic … latest,… 2019-10-25 13:01:00              0 http…
+#> 11 DomBe… trimal  A tool… latest   2019-10-25 12:59:00              0 http…
+#> 12 DomBe… pasta   PASTA … latest   2019-10-25 12:58:00              0 http…
+#> 13 DomBe… Partit… Partit… latest   2019-10-25 12:58:00              0 http…
+#> 14 DomBe… mafft   Multip… latest   2019-10-25 12:57:00              0 http…
+#> 15 DomBe… figlet  ASCII … latest   2019-10-24 15:09:00              0 http…
+#> 16 DomBe… hello … Templa… latest   2019-08-19 09:30:00              0 http…
+```
+
+There is also a package called ["outsider.devtools"](https://github.com/AntonelliLab/outsider.devtools) that makes it easier to create your own moduules, see `other/outsider_devtools.R`
+
+#### Running alignment software
+
+To demonstrate, let's run an alignment software tool, [mafft](https://mafft.cbrc.jp/alignment/software/), from within R. Let's install a module for mafft, and then run it on some test sequences ("ex\_seqs.fasta").
+
+#### Install
+
+``` r
+# CODE
+
+library(outsider)
+# squelch text to console
+verbosity_set(show_program = FALSE, show_docker = FALSE)
+# github repo to where the module is located
+repo <- 'dombennett/om..mafft'
+# install mafft
+module_install(repo = repo, force = TRUE)
+# look up available functions
+(module_functions(repo = repo))
+# import mafft function
+mafft <- module_import(fname = 'mafft', repo = repo)
+# test function
+mafft(arglist = '--help')
+
+# OUTPUT
+#> [1] "mafft"
+```
+
+#### Align
+
+``` r
+library(outsider)
+# Use example mafft nucleotide data
+ex_seqs_file <- file.path(getwd(), 'data', 'ex_seqs.fasta')
+(file.exists(ex_seqs_file))
+# Run
+mafft <- module_import(fname = 'mafft', repo = 'dombennett/om..mafft')
+ex_al_file <- file.path(getwd(), 'data', "ex_al.fasta")
+mafft(arglist = c('--auto', ex_seqs_file, '>', ex_al_file))
+(file.exists(ex_al_file))
+# View alignment
+cat(readLines(con = ex_al_file, n = 50), sep = '\n')
+#> [1] TRUE
+#> [1] TRUE
+#> >X02729 Methanococcus vannielli. #
+#> ----tatctattaccctacc----ctggggaatggcttggcttgaaacgccgatgaagga
+#> cgtggtaagctgcgataagcctaggcgaggcgcaa-cagcctttgaacctaggatttccg
+#> aatgggacttcctacttttgtaa--------------------tccgtaaggattggtaa
+#> cgcgggggattgaagcatcttagtacccgcaggaaaagaaatca-actgaga-ttccgtt
+#> agtagaggcgattgaacacggatcagggcaaactgaatcccttcg-------------gg
+#> gagatgtggtgttatagggccttct------tttcgcctgttgagaaaagctgaagtt-g
+#> actggaacg-tcacactatagagggtgaaagtcccgtaagcgcaatcgattcaggtt---
+#> tgaagtgt-ccctgagtaccgtgcgttggatatcgcgcgggaatt-tgggaggcatcaac
+#> ttccaactctaaatacgtttcaagaccgatagcgtac-tagtaccgcgagggaaagctga
+#> aaagcacccttaacagggtggtgaaa-agagcctgaaacccaggtaggtatggaatggcg
+#> tggccccaaagg-----caactgttctgaaggaaaccgtcgcaaggcggctgtacgaaga
+#> acag---agccagggttgcgtcctccgtttcgaaaaacgggccggggagtgta-ttgttg
+#> tggcgagcttaagatcttcac--gatcgaaggcgtagggaaaccaacaagtccgcagaat
+#> ct---------ttagggacggggtctt--aagggcccggagtcacagcaatacgacccga
+#> aaccgggcgatctaggccggggcaaggtgaagtccctcaattgagggatggaggcctg-c
+#> agagttgttgccgttcgaagcactcttctgacctcggtctaggggtgaaaggccaatcga
+#> gcccggagatagctggttcccctcgaagtgactctcaggtcagccagagttcaggtagtc
+#> ggcagggtagagc-actgataagatggttag-----gggaagaaattcctcgctgttttg
+#> tcaaactccgaacctgtcgtcgccg-taggctctgagtga-gggcatacggggtaagctg
+#> tatgtccgagacgggaatagccgagacttgggttaaggcccctaaatgccgattaagtgt
+#> gaac---acgaagggcgtccttggtctaagacagcagggaggttggcttagaagcagcca
+#> ccctttaaagagtgcgtaacagctcacctgtcgagatcaagggccccgaaaatggacggg
+#> gct-aaatcggctgccgagacccaaagggcaccgcaag--------gtgatccccgtagg
+#> ggggcgttctgcgagggcagaagttcggctgtgaagtcgagtggacctcgtagaaatgaa
+#> gatcccggtagtagtaacagcataagtggggtgagaa-tccccaccgccgaaggggcaag
+#> ggttccacagcaatgtttgtcagctgtgggtaagccggtcctaactctcgaggtaa--ct
+#> cctttgagaggaa-agggaaacaggttaatattcctgtgc------catctagatacgcg
+#> tggcaacacaaggttagt-ttccaacgcttctgggtaggctgagtgtt-cttgtctggac
+#> attcaagcttataag-tccggggagagttgtaataacgagaaccg-gatgaaagagtgat
+#> gagct-ctccgttaggagagttcggccgatctctggagcccgtgaaaagggaactagca-
+#> -aggattctagatgtccgtacccagaaccgacactggtgcccctaggtgagtatcctaag
+#> gcgtagcgggatgaatctagtcgagggaagtcggcaaattggttccgtaacttcgggaga
+#> aggagtgccagtgatcttgtttaaatatgggatcgctggtcgcagtgaccagggaggtcc
+#> gactgtttaatacaaacataggtcttagcgagcctgaaaaggtgtgtactaaggccgacg
+#> cctgcccagtgctggtacgtgaaccccggttccaaccgggcgaagcgccagtaaacggcg
+#> ggggtaactataaccctcttaaggtagcgaaattccttgtcgggcaagttccgacctgca
+#> tgaatggcgtaacgagacctccactgtccccgactagaatccggtgaacctaccattccg
+#> gcgcaaag-gccggagacttccagtgggaagcgaagaccccgtggagctttactgcagcc
+#> tgtcgttggggcatggttgtgagtgtacagtgtaggtgggagccatcgaaaccttttcgc
+#> c----aggaaaggtggaggcgatcctgggacaccaccctctcatgaccatgttcctcacc
+#> ctt-----ttaggggacaccggtaggtgggcagtttggctggggcggtaccctcctaaaa
+#> atgcatcaggagggccccaaaggttggctcaagcgggtcaggactccgctgttgagtg-t
+#> aagggcaaaagccagcctgactttgttgccaacaaaacg-caacgaagaggcgaaagccg
+#> ggcctaacgaacccctgtg--cctcactgatgggggccagggatgacaaaaaagctaccc
+#> cggggataacagagttgtcgcgggcaagagcccatatcgaccccgcggcttgctacctcg
+#> atgtcggtttttcccatcctgggtctgcagcaggacccaagggtggggctgttcgcccat
+#> taaaggggatcatgagctgggtttagaccgtcgtgagacaggttggttgctatctgctgg
+#> atgtgttaggctgtctgagggaaaggtggctctagtacgagaggaacgggccgtcggcgc
+#> ctctagtcgatcggttgtctgacaaggcac-tgccgagcagccacgcgccaagaga-taa
+```
+
+### [`gaius`](https://github.com/antonellilab/gaius) <img src="https://raw.githubusercontent.com/antonellilab/gaius/master/logo.png" height="200" align="right"/>
+
+-   `gaius` acts as the nexus package for the SUPERSMART pipeline in R
+-   It imports both alignments and trees and produces supermatrices and supertrees
+-   Its main role is to identify monophyletic groups of a given number of taxa for species-level trees
+-   The main "trick" is to use a pre-existing tree
+-   It can do a few clever things: there can be any number of levels of backbone, backbone supermatrices are constucted from an assortment of the best monophyletic sequences
+
+![](https://raw.githubusercontent.com/AntonelliLab/gaius/master/other/outline.png)
+
+``` r
+# CODE
+
+library(gaius)
+# vars
+alignment_dir <- file.path(getwd(), 'data', 'gaius_alignments')
+tree_file <- file.path(getwd(), 'data', 'taxtree.tre')
+# alignment files
+alignment_files <- file.path(alignment_dir,
+                             list.files(path = alignment_dir,
+                                        pattern = '.fasta'))
+(alignment_files[1:2])
+# get alignment names
+alignment_names <- names_from_alignments(alignment_files)
+(alignment_names[1:10])
+# tree tip names
+tree_names <- names_from_tree(tree_file)
+(tree_names[1:10])
+# match alignment names to those in tree
+matched_names <- name_match(alignment_names = alignment_names,
+                            tree_names = tree_names)
+(matched_names)
+# identify monophyletic groups
+groups <- groups_get(tree_file = tree_file, matched_names = matched_names)
+(groups)
+# read in alignments
+alignment_list <- alignment_read(flpths = alignment_files)
+(alignment_list)
+# ^ for a better idea of the alignment, try ...
+# viz(alignment_list[[1]])
+# construct supermatrices
+supermatrices <- supermatrices_get(alignment_list = alignment_list,
+                                   groups = groups, min_ngenes = 2,
+                                   min_ntips = 3, min_nbps = 100,
+                                   column_cutoff = 0, tip_cutoff = 0.1)
+(supermatrices)
+
+# OUTPUT
+#> [1] "/Users/djb208/Coding/supersmartR-workshop-mini/data/gaius_alignments/11_cluster_alignment.fasta"
+#> [2] "/Users/djb208/Coding/supersmartR-workshop-mini/data/gaius_alignments/9_cluster_alignment.fasta" 
+#>  [1] "Hystrix_brachyura"                
+#>  [2] "Cavia_tschudii"                   
+#>  [3] "Galea_musteloides"                
+#>  [4] "Hydrochoerus_hydrochaeris"        
+#>  [5] "Myocastor_coypus"                 
+#>  [6] "Aconaemys_sagei"                  
+#>  [7] "Octodon_bridgesi"                 
+#>  [8] "Tympanoctomys_loschalchalerosorum"
+#>  [9] "Dactylomys_boliviensis"           
+#> [10] "Dactylomys_dactylinus"            
+#>  [1] "Abrocoma_bennettii_bennettii" "Abrocoma_boliviensis"        
+#>  [3] "Abrocoma_cinerea"             "Aconaemys_fuscus"            
+#>  [5] "Aconaemys_porteri"            "Aconaemys_sagei"             
+#>  [7] "Atherurus_africanus"          "Atherurus_macrourus"         
+#>  [9] "Bathyergus_janetta"           "Bathyergus_sp_CAM_2005"      
+#> [141] names matched:
+#> ... from `$alignment` Hystrix_brachyura, Cavia_tschudii, Galea_musteloides ...
+#> ... to `$tree` Hystrix_brachyura_hodgsoni, Cavia_tschudii_osgoodi, Galea_musteloides_leucoblephara ...
+#> [0] unmatched.
+#> Tips group object of [7] elements:
+#> ... [114] tips in mono
+#> ... [27] tips in super'alignment_list' object, with 4 'alignment' objects
+#> 
+#> [["11_cluster_alignment"]] ...
+#> An 'alignment': 62 tips x 1102 bps
+#> ... $Hystrix_brachyura                 --------gactacctaaacggccccttcaccg ...
+#> ... $Cavia_tschudii                    --------gattacctaaatggtcccttcacag ...
+#> ... $Galea_musteloides                 --------gactacctcaatggccccttcacgg ...
+#> ... $Hydrochoerus_hydrochaeris         --------gactacctaaatggccccttcacgg ...
+#> ... $Myocastor_coypus                  --------gattacctcaatggccccttcacgg ...
+#> ... $Aconaemys_sagei                   --------gactacctnaanggccccttcacgg ...
+#> ... $Octodon_bridgesi                  --------gactacctcaatggccccttcacgg ...
+#> ... $Tympanoctomys_loschalchalerosorum --------gactacctcaatggtcccttcacgg ...
+#> ... $Dactylomys_boliviensis            accttgacgtcatcatcaacgggcacttcacgg ...
+#> ... $Dactylomys_dactylinus             accttgatgactacctcaacggccccttcatgg ...
+#> ... with 52 more tip(s)
+#> 
+#> ... [["genegrowth_alignment"]]
+#> 'supermatices' list, with 7 'supermatrix' objects
+#> 
+#> [["n88"]] ...
+#> A 'supermatrix': 6 tips x 5227 bps x 4 genes, 64% gaps
+#> ... $Octodontomys_gliroides --------gactacctcaatggccccttcacggtggtggtcaag ...
+#> ... $Ctenomys_boliviensis   -------------cctcaatggccccttcacggtggtggtcaag ...
+#> ... $Ctenomys_coyhaiquensis accttgatgactacctcaatggccccttcacggtggtggtcaag ...
+#> ... $Ctenomys_minutus       accttgacgactacctcaatggccccttcgcggtggtggtcaag ...
+#> ... $Ctenomys_haigi         -------------------------------------------- ...
+#> ... $Ctenomys_steinbachi    -------------------------------------------- ...
+#> 
+#> ... [["backbone"]]
+```
 
 Pipeline
 --------
+
+![](https://raw.githubusercontent.com/AntonelliLab/supersmartR-workshop-mini/master/assets/cavvy_shot.png)
 
 A complete pipeline for constructing a phylogenetic tree of all Caviomorpha species is contained in `pipeline/`. The pipeline uses the above packages and their functions. We can run each script of the pipeline using `source()`. (To save time we will skip the `restez` and `phylotaR` steps and download a completed folder of the first part of the results.)
 
@@ -655,7 +892,7 @@ outsider::ssh_teardown()
 #> ... 4_supermatrix.R
 #> ... 6_supertree.R
 #> ... 7_view.R
-#> Duration:  0.207  minutes.
+#> Duration:  0.198  minutes.
 ```
 
 ![supertree](supertree.png)

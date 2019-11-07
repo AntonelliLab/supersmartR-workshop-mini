@@ -42,6 +42,13 @@ This workshop we will [introduce the packages](#packages) and provide code to
 run a simple [pipeline](#pipeline) to create a phylogenetic tree (a supertree
 of all Guinea-pig-like species).
 
+* [Introduction to `phylotaR`](#phylotar)
+* [Introduction to `restez`](#restez)
+* [Introduction to `outsider`](#outsider)
+* [Introduction to `gaius`](#gaius)
+* [Supertree pipeline](#pipeline)
+
+
 *Duration ~1 hr*
 
 * * *
@@ -56,8 +63,9 @@ of all Guinea-pig-like species).
     * R
     * Phylogenetics
 
-(Windows users may struggle installing Docker Desktop, in which case Docker
-Toolbox will also work.)
+(Windows users may struggle installing Docker Desktop, in which case
+[Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/) will
+also work.)
 
 ### R packages
 
@@ -117,7 +125,7 @@ To run all the code in this workshop you will need to:
 
 ## Packages
 
-### [`phylotaR`](https://github.com/ropensci/phylotaR)
+### [`phylotaR`](https://github.com/ropensci/phylotaR) <img src="https://raw.githubusercontent.com/ropensci/phylotaR/master/logo.png" height="200" align="right"/>
 
 The `phylotaR` package downloads all sequences associated with a given
 taxonomic group and then runs all-vs-all BLAST to identify clusters of
@@ -276,7 +284,7 @@ cat(readLines(outfile), sep = '\n')
 # OUTPUT
 ```
 
-### [`restez`](https://github.com/ropensci/restez)
+### [`restez`](https://github.com/ropensci/restez) <img src="https://raw.githubusercontent.com/ropensci/restez/master/logo.png" height="200" align="right"/>
 
 `restez` is a package that allows users to download whole chunks of NCBI's
 [GenBank](https://www.ncbi.nlm.nih.gov/genbank/). The package works by:
@@ -324,7 +332,7 @@ restez_disconnect()
 # OUTPUT
 ```
 
-## Query the database
+#### Query the database
 
 We can send queries to the database using two different methods: `restez`
 functions or [`rentrez`](https://ropensci.org/tutorials/rentrez_tutorial/)
@@ -356,11 +364,135 @@ restez_disconnect()
 # OUTPUT
 ```
 
-### [`outsider`](https://github.com/antonellilab/outsider)
+### [`outsider`](https://github.com/antonellilab/outsider) <img src="https://raw.githubusercontent.com/antonellilab/outsider/master/logo.png" height="200" align="right"/>
 
-### [`gaius`](https://github.com/antonellilab/gaius)
+`outsider` is a package that allows users to install and run external code
+within the R environment. This is very useful when trying to construct
+pipelines that make use of a variety of code. `outsider` requires Docker to
+work. It should be able to launch any (?!) command-line program.
+
+![](https://raw.githubusercontent.com/AntonelliLab/outsider/master/other/outline.png)
+
+You can find out what modules are available for a given coding-service using:
+
+```{r outsider-available, echo=TRUE, results='hold'}
+library(outsider)
+module_details(service = 'github')
+```
+
+There is also a package called
+["outsider.devtools"](https://github.com/AntonelliLab/outsider.devtools) that
+makes it easier to create your own moduules, see `other/outsider_devtools.R`
+
+#### Running alignment software
+
+To demonstrate, let's run an alignment software tool,
+[mafft](https://mafft.cbrc.jp/alignment/software/), from within R. Let's
+install a module for mafft, and then run it on some test sequences
+("ex_seqs.fasta").
+
+#### Install
+
+```{r remove-mafft, include=FALSE}
+if (outsider::is_module_installed('dombennett/om..mafft')) {
+  outsider::module_uninstall('dombennett/om..mafft')
+}
+```
+
+```{r outsider-mafft, echo=TRUE, results='hold'}
+# CODE
+
+library(outsider)
+# squelch text to console
+verbosity_set(show_program = FALSE, show_docker = FALSE)
+# github repo to where the module is located
+repo <- 'dombennett/om..mafft'
+# install mafft
+module_install(repo = repo, force = TRUE)
+# look up available functions
+(module_functions(repo = repo))
+# import mafft function
+mafft <- module_import(fname = 'mafft', repo = repo)
+# test function
+mafft(arglist = '--help')
+
+# OUTPUT
+```
+
+#### Align
+
+```{r outsider-align, echo=TRUE, results='hold'}
+library(outsider)
+# Use example mafft nucleotide data
+ex_seqs_file <- file.path(getwd(), 'data', 'ex_seqs.fasta')
+(file.exists(ex_seqs_file))
+# Run
+mafft <- module_import(fname = 'mafft', repo = 'dombennett/om..mafft')
+ex_al_file <- file.path(getwd(), 'data', "ex_al.fasta")
+mafft(arglist = c('--auto', ex_seqs_file, '>', ex_al_file))
+(file.exists(ex_al_file))
+# View alignment
+cat(readLines(con = ex_al_file, n = 50), sep = '\n')
+```
+
+### [`gaius`](https://github.com/antonellilab/gaius) <img src="https://raw.githubusercontent.com/antonellilab/gaius/master/logo.png" height="200" align="right"/>
+
+* `gaius` acts as the nexus package for the SUPERSMART pipeline in R
+* It imports both alignments and trees and produces supermatrices and
+supertrees
+* Its main role is to identify monophyletic groups of a given number of taxa
+for species-level trees
+* The main "trick" is to use a pre-existing tree
+* It can do a few clever things: there can be any number of levels of backbone,
+backbone supermatrices are constucted from an assortment of the best
+monophyletic sequences
+
+![](https://raw.githubusercontent.com/AntonelliLab/gaius/master/other/outline.png)
+
+```{r gaius, results='hold'}
+# CODE
+
+library(gaius)
+# vars
+alignment_dir <- file.path(getwd(), 'data', 'gaius_alignments')
+tree_file <- file.path(getwd(), 'data', 'taxtree.tre')
+# alignment files
+alignment_files <- file.path(alignment_dir,
+                             list.files(path = alignment_dir,
+                                        pattern = '.fasta'))
+(alignment_files[1:2])
+# get alignment names
+alignment_names <- names_from_alignments(alignment_files)
+(alignment_names[1:10])
+# tree tip names
+tree_names <- names_from_tree(tree_file)
+(tree_names[1:10])
+# match alignment names to those in tree
+matched_names <- name_match(alignment_names = alignment_names,
+                            tree_names = tree_names)
+(matched_names)
+# identify monophyletic groups
+groups <- groups_get(tree_file = tree_file, matched_names = matched_names)
+(groups)
+# read in alignments
+alignment_list <- alignment_read(flpths = alignment_files)
+(alignment_list)
+# ^ for a better idea of the alignment, try ...
+# viz(alignment_list[[1]])
+# construct supermatrices
+supermatrices <- supermatrices_get(alignment_list = alignment_list,
+                                   groups = groups, min_ngenes = 2,
+                                   min_ntips = 3, min_nbps = 100,
+                                   column_cutoff = 0, tip_cutoff = 0.1)
+(supermatrices)
+
+# OUTPUT
+```
+
 
 ## Pipeline
+
+![](https://raw.githubusercontent.com/AntonelliLab/supersmartR-workshop-mini/master/assets/cavvy_shot.png)
 
 A complete pipeline for constructing a phylogenetic tree of all Caviomorpha
 species is contained in `pipeline/`. The pipeline uses the above packages and their functions. We can run each script of the pipeline using `source()`. (To
